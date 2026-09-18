@@ -286,6 +286,29 @@
     $('#hero-toggle').setAttribute('aria-label', heroPaused ? 'Reproduzir vídeo de fundo' : 'Pausar vídeo de fundo');
     $('#hero-toggle').setAttribute('aria-pressed', String(heroPaused));
   }
+  let heroSoundEnabled = false;
+  let heroSoundRequested = false;
+  function fadeInHeroSound(player) {
+    if (!player || heroSoundEnabled) return;
+    heroSoundEnabled = true;
+    player.unMute();
+    player.setVolume(0);
+    const frame = player.getIframe?.();
+    if (frame) frame.title = 'Meio Bruta, vídeo de fundo';
+    let volume = 0;
+    const target = 55;
+    const step = window.setInterval(() => {
+      volume = Math.min(target, volume + 6);
+      player.setVolume(volume);
+      if (volume >= target) window.clearInterval(step);
+    }, 70);
+  }
+  function requestHeroSound() {
+    if (heroSoundRequested || heroPaused || reduceMotion.matches || saveData) return;
+    heroSoundRequested = true;
+    if (heroPlayer && heroVisible) fadeInHeroSound(heroPlayer);
+  }
+  ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(evt => document.addEventListener(evt, requestHeroSound, { once: true, passive: true }));
   function createHeroPlayer() {
     if (!window.YT?.Player || heroPlayer) return;
     const host = document.createElement('div');
@@ -295,7 +318,7 @@
       videoId: data.heroVideo,
       playerVars: { autoplay: heroPaused ? 0 : 1, mute: 1, playsinline: 1, controls: 0, disablekb: 1, loop: 1, playlist: data.heroVideo, rel: 0, start: 16, cc_load_policy: 0, iv_load_policy: 3, ...(location.protocol.startsWith('http') ? { origin: location.origin } : {}) },
       events: {
-        onReady(event) { event.target.mute(); const frame = event.target.getIframe(); frame.tabIndex = -1; frame.title = 'Meio Bruta, vídeo de fundo sem som'; if (!heroPaused && heroVisible) event.target.playVideo(); },
+        onReady(event) { event.target.mute(); const frame = event.target.getIframe(); frame.tabIndex = -1; frame.title = 'Meio Bruta, vídeo de fundo sem som'; if (!heroPaused && heroVisible) event.target.playVideo(); if (heroSoundRequested) fadeInHeroSound(event.target); },
         onStateChange(event) { if (event.data === 1) $('#hero-video').classList.add('playing'); },
         onError() { $('#hero-video').classList.remove('playing'); $('#hero-toggle').hidden = true; }
       }
