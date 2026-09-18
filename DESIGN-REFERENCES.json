@@ -1,0 +1,32 @@
+{
+  "layout_reference": "https://kauan-furacao-landinpage.vercel.app/",
+  "adaptation": "Estrutura própria em HTML, CSS e JavaScript com conteúdo de Os Baileiros. Paleta inspirada no ônibus oficial.",
+  "brand": {
+    "image": "dist/assets/banda.png",
+    "source": "https://www.youtube.com/@GrupoOsBaileiros",
+    "method": "Exibição da logo original por janela CSS; imagem de origem permanece intacta.",
+    "palette": "Branco/prata, preto e detalhes roxos originais."
+  },
+  "design_assets": [
+    {
+      "file": "dist/assets/vinyl.png",
+      "source": "https://kauan-furacao-landinpage.vercel.app/assets/fotos/vinyl.png"
+    },
+    {
+      "file": "dist/assets/fonts/barlow-bold.ttf",
+      "font": "Barlow Condensed ExtraBold",
+      "source": "Página de referência indicada pelo cliente; arquivo local de fonte."
+    },
+    {
+      "file": "dist/assets/fonts/dm-sans.ttf",
+      "font": "DM Sans Regular",
+      "source": "Página de referência indicada pelo cliente; arquivo local de fonte."
+    }
+  ],
+  "mobile_refinement": {
+    "composition": "Imagem/vídeo em destaque antes dos textos; logo oficial; duas chamadas; redes sociais; vinil grande centralizado.",
+    "reference": "Capturas mobile de Kauan Furacão enviadas pelo cliente",
+    "palette": "Base preta, branca e prata; roxo da marca nos destaques; verde WhatsApp/Spotify; vermelho YouTube; rosa/roxo Instagram",
+    "controls": "Play abre o clipe real. Não há linha de tempo nem controles de áudio simulados."
+  }
+}

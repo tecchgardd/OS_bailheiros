@@ -1,0 +1,23 @@
+{
+  "asset": "assets/banda.png",
+  "source": "https://www.youtube.com/@GrupoOsBaileiros",
+  "original_dimensions": {
+    "width": 1895,
+    "height": 1895
+  },
+  "logo_area_approximate": {
+    "x": 200,
+    "y": 1030,
+    "width": 1540,
+    "height": 530
+  },
+  "display_method": "Janela e máscara de contorno em CSS sobre a imagem oficial; sem redesenhar, gerar ou recolorir a marca.",
+  "standalone_file_status": "Não foi localizado arquivo avulso transparente em alta resolução.",
+  "bus_palette": {
+    "asset": "assets/onibus.jpg",
+    "source": "https://www.instagram.com/reel/DWpG0j7kYBo/",
+    "body": "Branco/prata",
+    "graphics": "Preto com marca clara",
+    "note": "Os detalhes roxos da marca nas redes sociais foram preservados. Não foi inferida a pintura das áreas não visíveis do ônibus."
+  }
+}

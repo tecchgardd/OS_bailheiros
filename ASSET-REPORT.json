@@ -1,0 +1,61 @@
+{
+  "best_band_asset": {
+    "path": "/workspace/scratch/ac4489d78409/baileiros-assets/band-official-original.png",
+    "dimensions": "1895x1895",
+    "source_page": "https://www.youtube.com/@GrupoOsBaileiros",
+    "source_asset": "https://yt3.googleusercontent.com/yzmh8TO3KtYubdAKVz38rg_ZYRiGQncFkYeHihZ4rY4uetmEu1WTrKDvhk1vVomM_-x6B0o_GA=s0",
+    "depicts": "Current five-member band in gray gaucho shirts with scarves, two hats; official logo below. Matches user screenshot current lineup. White RGB background, not transparent.",
+    "reuse": "Official channel promotional asset; no explicit reuse license found. Do not claim transparent logo."
+  },
+  "best_bus_asset": {
+    "path": "/workspace/scratch/ac4489d78409/baileiros-assets/bus-original-cover.jpg",
+    "dimensions": "640x1136",
+    "source_page": "https://www.instagram.com/reel/DWpG0j7kYBo/",
+    "depicts": "Actual branded Os Baileiros white and black tour bus at garage, huge italic lettering and sweeping underline. No playback overlay.",
+    "reuse": "Official Instagram reel thumbnail supplied by user as reference. CDN URL in reel-source-urls.txt. Public embed marks full reel copyright_blocked and does not expose playable video."
+  },
+  "stage_asset": {
+    "path": "/workspace/scratch/ac4489d78409/baileiros-assets/instagram-DdSVcxvgqCr.jpg",
+    "dimensions": "1080x1080",
+    "source_page": "https://www.instagram.com/p/DdSVcxvgqCr/",
+    "depicts": "Real band live on stage with red/orange screen and current logo. Black letterboxing baked into source; stage picture y236-845 approximately.",
+    "reuse": "Official/collaborative Instagram post, no explicit reuse license found."
+  },
+  "current_band_event_art": {
+    "path": "/workspace/scratch/ac4489d78409/baileiros-assets/instagram-DdMVBLfuSuJ.jpg",
+    "dimensions": "1080x1080",
+    "source_page": "https://www.instagram.com/p/DdMVBLfuSuJ/",
+    "depicts": "Current five musicians and white/black logo over orange poster with stage image below."
+  },
+  "current_events": [
+    {
+      "date": "2026-09-18",
+      "venue": "Vilarejo Beach",
+      "time": "Doors 18h; show 20h30, per poster",
+      "source": "https://www.instagram.com/p/DdKlCvfOuGm/",
+      "poster": "/workspace/scratch/ac4489d78409/baileiros-assets/instagram-DdKlCvfOuGm.jpg"
+    },
+    {
+      "date": "2026-09-19",
+      "venue": "Rancho Xaxim",
+      "city": "Curitibanos/SC",
+      "time": "Doors 22h30, per adjacent promotional caption",
+      "source": "https://www.instagram.com/p/DdMVBLfuSuJ/",
+      "poster": "/workspace/scratch/ac4489d78409/baileiros-assets/instagram-DdMVBLfuSuJ.jpg"
+    },
+    {
+      "date": "2026-09-20",
+      "venue": "Festa de Sao Mateus, Capela de Sao Mateus - Tres Riachos",
+      "city": "Biguacu/SC",
+      "time": "Domingueira 15h, per poster",
+      "source": "https://www.instagram.com/p/DdUIsBkR7-Q/",
+      "poster": "/workspace/scratch/ac4489d78409/baileiros-assets/instagram-DdUIsBkR7-Q.jpg"
+    }
+  ],
+  "limitations": [
+    "No standalone official transparent logo found. Small profile logo is 100x100 and gray background; Facebook image is cropped.",
+    "Do not use older low-resolution RZ promotional asset as current lineup.",
+    "Third-party verified bus photo https://onibusbrasil.com/brunobcordeiro1980/12880855 could not be downloaded (HTTP 403); page explicitly requires photographer Bruno Barbosa Cordeiro permission for reuse.",
+    "YouTube i.ytimg.com video thumbnail downloads returned HTTP 502. Official channel avatar original downloaded successfully."
+  ]
+}
