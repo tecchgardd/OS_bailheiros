@@ -286,29 +286,6 @@
     $('#hero-toggle').setAttribute('aria-label', heroPaused ? 'Reproduzir vídeo de fundo' : 'Pausar vídeo de fundo');
     $('#hero-toggle').setAttribute('aria-pressed', String(heroPaused));
   }
-  let heroSoundEnabled = false;
-  let heroSoundRequested = false;
-  function fadeInHeroSound(player) {
-    if (!player || heroSoundEnabled) return;
-    heroSoundEnabled = true;
-    player.unMute();
-    player.setVolume(0);
-    const frame = player.getIframe?.();
-    if (frame) frame.title = 'Meio Bruta, vídeo de fundo';
-    let volume = 0;
-    const target = 55;
-    const step = window.setInterval(() => {
-      volume = Math.min(target, volume + 6);
-      player.setVolume(volume);
-      if (volume >= target) window.clearInterval(step);
-    }, 70);
-  }
-  function requestHeroSound() {
-    if (heroSoundRequested || heroPaused || reduceMotion.matches || saveData) return;
-    heroSoundRequested = true;
-    if (heroPlayer && heroVisible) fadeInHeroSound(heroPlayer);
-  }
-  ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(evt => document.addEventListener(evt, requestHeroSound, { once: true, passive: true }));
   function createHeroPlayer() {
     if (!window.YT?.Player || heroPlayer) return;
     const host = document.createElement('div');
@@ -318,7 +295,7 @@
       videoId: data.heroVideo,
       playerVars: { autoplay: heroPaused ? 0 : 1, mute: 1, playsinline: 1, controls: 0, disablekb: 1, loop: 1, playlist: data.heroVideo, rel: 0, start: 16, cc_load_policy: 0, iv_load_policy: 3, ...(location.protocol.startsWith('http') ? { origin: location.origin } : {}) },
       events: {
-        onReady(event) { event.target.mute(); const frame = event.target.getIframe(); frame.tabIndex = -1; frame.title = 'Meio Bruta, vídeo de fundo sem som'; if (!heroPaused && heroVisible) event.target.playVideo(); if (heroSoundRequested) fadeInHeroSound(event.target); },
+        onReady(event) { event.target.mute(); const frame = event.target.getIframe(); frame.tabIndex = -1; frame.title = 'Meio Bruta, vídeo de fundo sem som'; if (!heroPaused && heroVisible) event.target.playVideo(); },
         onStateChange(event) { if (event.data === 1) $('#hero-video').classList.add('playing'); },
         onError() { $('#hero-video').classList.remove('playing'); $('#hero-toggle').hidden = true; }
       }
@@ -342,12 +319,34 @@
   updateHeroControl();
   if (!heroPaused) loadHeroVideo();
 
+  const floatingSpotifyToggle = $('#floating-spotify-toggle');
+  const floatingSpotifyPanel = $('#floating-spotify-panel');
+  floatingSpotifyToggle.addEventListener('click', () => {
+    const open = floatingSpotifyPanel.hidden;
+    if (open && !floatingSpotifyPanel.childElementCount) {
+      floatingSpotifyPanel.innerHTML = `<iframe src="${data.spotifyEmbed}" title="Os Baileiros no Spotify" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+    }
+    floatingSpotifyPanel.hidden = !open;
+    floatingSpotifyToggle.setAttribute('aria-expanded', String(open));
+  });
+
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(entries => {
-      heroVisible = entries[0].isIntersecting;
-      if (heroVisible && !heroPaused && !document.hidden && !mediaModal.open && !actionModal.open) heroPlayer?.playVideo?.();
-      else heroPlayer?.pauseVideo?.();
-    }, { threshold: .1 }).observe($('#inicio'));
+    new IntersectionObserver(entries => { heroVisible = entries[0].isIntersecting; }, { threshold: .1 }).observe($('#inicio'));
+
+    // Scroll-spy: keep the URL hash and nav highlight in sync with whichever section is actually in view.
+    const spyLinks = $$('#navigation a[href^="#"], .footer-bottom nav a[href^="#"]');
+    let activeSectionId = null;
+    function setActiveSection(id) {
+      if (id === activeSectionId) return;
+      activeSectionId = id;
+      spyLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
+      const target = id === 'inicio' ? location.pathname + location.search : `#${id}`;
+      history.replaceState(null, '', target);
+    }
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) setActiveSection(entry.target.id); });
+    }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
+    $$('main section[id]').forEach(section => spy.observe(section));
     new IntersectionObserver(entries => { carouselVisible = entries[0].isIntersecting; }, { threshold: .2 }).observe(tracks);
     new IntersectionObserver(entries => {
       const visible = entries[0].isIntersecting;

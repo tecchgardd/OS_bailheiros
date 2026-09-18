@@ -71,12 +71,6 @@
             <div class="hero-actions"><a class="button button-play" href="#musica"><svg><use href="#i-play"/></svg> Dê o play</a><button class="button button-outline" data-modal="booking"><svg><use href="#i-whatsapp"/></svg> Contratar show</button></div>
             <div class="hero-platforms"><span>LEVE O NOSSO SOM COM VOCÊ</span><div><button data-modal="spotify"><svg><use href="#i-spotify"/></svg> Spotify</button><button data-modal="youtube"><svg><use href="#i-youtube"/></svg> YouTube</button><button data-modal="instagram"><svg><use href="#i-instagram"/></svg> Instagram</button></div></div>
           </div>
-          <aside class="hero-story" aria-label="Meio Bruta em destaque">
-            <span class="story-kicker">DÊ O PLAY. SINTA O MOMENTO.</span>
-            <button class="story-disc-button" data-play="ob75k7LWSkg" data-title="Meio Bruta · feat. Marlon Moraes" aria-label="Assistir a Meio Bruta"><span class="story-disc"><img class="story-vinyl" src="assets/vinyl.png" alt="" width="600" height="600"><span class="disc-label"><img src="assets/wp1_Usv7eK8.jpg" alt="" width="320" height="320"></span></span><span class="disc-play"><svg><use href="#i-play"/></svg></span></button>
-            <button class="story-sticker" data-play="ob75k7LWSkg" data-title="Meio Bruta · feat. Marlon Moraes"><img src="assets/ob75k7LWSkg.jpg" alt="" width="80" height="80"><span><strong>Meio Bruta</strong><small>Os Baileiros · Clipe</small></span><svg><use href="#i-play"/></svg></button>
-            <button class="story-link" data-modal="spotify">Ouça também no Spotify <svg><use href="#i-up-right"/></svg></button>
-          </aside>
         </div>
         <div class="hero-bottom"><a class="scroll-cue" href="#sobre"><svg class="scroll-arrow"><use href="#i-arrow"/></svg> CONHEÇA O GRUPO</a><span class="hero-motto">RAIZ. PRESENÇA. OS BAILEIROS.</span><div class="hero-controls"><span>VÍDEO DE FUNDO</span><button class="icon-button" id="hero-toggle" aria-label="Pausar vídeo de fundo" aria-pressed="false"><svg><use href="#i-pause"/></svg></button><button class="icon-button" data-play="ob75k7LWSkg" data-title="Meio Bruta · feat. Marlon Moraes" aria-label="Assistir a Meio Bruta com som"><svg><use href="#i-sound"/></svg></button></div></div>
       </div>
@@ -141,6 +135,15 @@
   <footer class="site-footer"><div class="container"><div class="footer-top"><a href="#inicio" class="brand" aria-label="Os Baileiros, voltar ao início"><span class="logo-crop"><img class="official-logo" src="assets/banda.png" alt="Grupo Os Baileiros — logo oficial" width="1895" height="1895"></span></a><p>15 anos de história.<br>E muitos bailes pela frente.</p><div class="footer-social"><button class="icon-button" data-modal="instagram" aria-label="Acompanhar no Instagram"><svg><use href="#i-instagram"/></svg></button><button class="icon-button" data-modal="spotify" aria-label="Ouvir no Spotify"><svg><use href="#i-spotify"/></svg></button><button class="icon-button" data-modal="youtube" aria-label="Assistir no YouTube"><svg><use href="#i-youtube"/></svg></button><button class="icon-button" data-modal="booking" aria-label="Contratar pelo WhatsApp"><svg><use href="#i-whatsapp"/></svg></button></div></div><div class="footer-bottom"><span>© <span id="year">2026</span> Grupo Os Baileiros.</span><nav aria-label="Links do rodapé"><a href="#sobre">O grupo</a><a href="#musica">Música</a><a href="#agenda">Agenda</a><a href="#galeria">Fotos & artes</a><a href="#contato">Contrate</a></nav><a class="back-top" href="#inicio">VOLTAR AO TOPO ↑</a></div><p class="photo-credit" id="photo-credit"></p></div></footer>
 
   <button class="floating-whatsapp" data-modal="booking" aria-label="Consultar shows pelo WhatsApp"><span>Vamos fazer um baile?</span><svg><use href="#i-whatsapp"/></svg></button>
+
+  <div class="floating-spotify" id="floating-spotify">
+    <div class="floating-spotify-panel" id="floating-spotify-panel" hidden></div>
+    <button class="floating-spotify-toggle" id="floating-spotify-toggle" aria-expanded="false" aria-controls="floating-spotify-panel">
+      <span class="floating-spotify-icon"><svg><use href="#i-spotify"/></svg></span>
+      <span class="floating-spotify-label"><strong>FAIXAS OFICIAIS · SPOTIFY</strong><small>Os Baileiros</small></span>
+      <span class="floating-spotify-chevron"><svg><use href="#i-arrow"/></svg></span>
+    </button>
+  </div>
 
   <dialog class="modal" id="action-modal" aria-labelledby="modal-title"><div class="modal-toolbar"><span id="modal-context">Os Baileiros</span><button class="modal-close icon-button" data-close aria-label="Fechar janela"><svg><use href="#i-close"/></svg></button></div><div class="modal-inner" id="modal-content"></div></dialog>
   <dialog class="media-modal" id="media-modal" aria-labelledby="media-title"><div class="media-modal-header"><h2 id="media-title" tabindex="-1">Os Baileiros</h2><button class="icon-button" data-close aria-label="Fechar mídia"><svg><use href="#i-close"/></svg></button></div><div id="media-content"></div><div id="media-footer"></div></dialog>
