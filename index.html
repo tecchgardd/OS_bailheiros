@@ -39,15 +39,24 @@
     <symbol id="i-spotify" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M6.5 9c4-1.4 8.5-1 11 1M7.2 12c3.1-1 6.7-.7 9.5 1M8 15c2.4-.7 5.2-.5 7.4.8" stroke-linecap="round"/></symbol>
     <symbol id="i-headphones" viewBox="0 0 24 24"><path d="M4 14v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="12" width="4" height="8" rx="2"/><rect x="17" y="12" width="4" height="8" rx="2"/></symbol>
     <symbol id="i-sound" viewBox="0 0 24 24"><path d="m11 4-6 5H2v6h3l6 5ZM16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="m11 4-6 5H2v6h3l6 5ZM16 9l6 6m0-6-6 6"/></symbol>
     <symbol id="i-expand" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></symbol>
     <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
   </svg>
+
+  <!-- The Meio Bruta clip runs behind the whole page; sections let it through at different strengths. -->
+  <div class="page-film" aria-hidden="true">
+    <div class="film-poster"></div>
+    <div class="film-video" id="film-video"></div>
+    <div class="film-shade"></div>
+  </div>
 
   <header class="site-header" id="header">
     <div class="container header-inner">
       <a href="#inicio" class="brand" aria-label="Os Baileiros, início"><span class="logo-crop"><img class="official-logo" src="assets/banda.png" alt="Grupo Os Baileiros — logo oficial" width="1895" height="1895"></span></a>
       <nav id="navigation" aria-label="Menu principal">
-        <a href="#inicio">Início</a><a href="#sobre">O grupo</a><a href="#musica">Discografia</a><a href="#agenda">Agenda</a><a href="#galeria">Fotos & artes</a>
+        <a href="#sobre">O grupo</a><a href="#musica">Discografia</a><a href="#agenda">Agenda</a><a href="#parceiros">Parceiros</a><a href="#galeria">Fotos & artes</a>
       </nav>
       <button class="button button-small header-cta" data-modal="booking"><svg><use href="#i-whatsapp"/></svg> Contrate o show</button>
       <button class="icon-button menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="navigation" aria-label="Abrir menu"><svg><use href="#i-menu"/></svg></button>
@@ -56,30 +65,26 @@
 
   <main id="conteudo">
     <section class="hero" id="inicio" aria-labelledby="hero-title">
-      <div class="hero-visual" aria-hidden="true">
-        <div class="hero-poster"></div>
-        <div class="hero-video" id="hero-video"></div>
-        <div class="hero-shade"></div>
-      </div>
       <div class="container hero-content">
         <div class="hero-stage">
           <div class="hero-copy">
             <p class="eyebrow"><span class="line"></span> 15 ANOS · MÚSICA, HISTÓRIA E ESTRADA</p>
             <h1 id="hero-title" class="hero-logo-title"><span class="logo-crop"><img src="assets/banda.png" alt="Grupo Os Baileiros — logo oficial" width="1895" height="1895" fetchpriority="high"></span></h1>
             <p class="hero-subtitle">O baile começa aqui.<br>A próxima história é com você.</p>
-            <p class="hero-description">De “Meio Bruta” a “Prendinha de Rodeio”.<br>Dê o play, cante junto e sinta a nossa energia.</p>
-            <div class="hero-actions"><a class="button button-play" href="#musica"><svg><use href="#i-play"/></svg> Dê o play</a><button class="button button-outline" data-modal="booking"><svg><use href="#i-whatsapp"/></svg> Contratar show</button></div>
+            <p class="hero-description">O clipe que está rodando no fundo é “Meio Bruta”. <br>Dê o play, cante junto e sinta a nossa energia.</p>
+            <div class="hero-actions"><button class="button button-play" data-modal="song"><svg><use href="#i-play"/></svg> Ouvir Meio Bruta</button><button class="button button-outline" data-modal="booking"><svg><use href="#i-whatsapp"/></svg> Contratar show</button></div>
             <div class="hero-platforms"><span>LEVE O NOSSO SOM COM VOCÊ</span><div><button data-modal="spotify"><svg><use href="#i-spotify"/></svg> Spotify</button><button data-modal="youtube"><svg><use href="#i-youtube"/></svg> YouTube</button><button data-modal="instagram"><svg><use href="#i-instagram"/></svg> Instagram</button></div></div>
           </div>
         </div>
-        <div class="hero-bottom"><a class="scroll-cue" href="#sobre"><svg class="scroll-arrow"><use href="#i-arrow"/></svg> CONHEÇA O GRUPO</a><span class="hero-motto">RAIZ. PRESENÇA. OS BAILEIROS.</span><div class="hero-controls"><span>VÍDEO DE FUNDO</span><button class="icon-button" id="hero-toggle" aria-label="Pausar vídeo de fundo" aria-pressed="false"><svg><use href="#i-pause"/></svg></button><button class="icon-button" data-play="ob75k7LWSkg" data-title="Meio Bruta · feat. Marlon Moraes" aria-label="Assistir a Meio Bruta com som"><svg><use href="#i-sound"/></svg></button></div></div>
+        <div class="hero-bottom"><a class="scroll-cue" href="#sobre"><svg class="scroll-arrow"><use href="#i-arrow"/></svg> CONHEÇA O GRUPO</a><span class="hero-motto">RAIZ. PRESENÇA. OS BAILEIROS.</span><div class="hero-controls"><span>CLIPE DE FUNDO</span><button class="icon-button" id="film-toggle" aria-label="Pausar clipe de fundo" aria-pressed="false"><svg><use href="#i-pause"/></svg></button><button class="icon-button film-sound-icon" data-film-sound aria-label="Ligar o som do clipe de fundo"><svg><use href="#i-mute"/></svg></button></div></div>
       </div>
     </section>
-    <div class="statement-band" aria-hidden="true"><div><span>MÚSICA QUE APROXIMA</span><b>✳</b><span>HISTÓRIAS QUE FICAM</span><b>✳</b><span>FEITOS DE BAILE</span><b>✳</b><span>MÚSICA QUE APROXIMA</span><b>✳</b></div></div>
+
+    <div class="statement-band" aria-hidden="true"><div class="statement-track"><span>MEIO BRUTA</span><i></i><span>MÚSICA QUE APROXIMA</span><i></i><span>HISTÓRIAS QUE FICAM</span><i></i><span>FEITOS DE BAILE</span><i></i><span>MEIO BRUTA</span><i></i><span>MÚSICA QUE APROXIMA</span><i></i><span>HISTÓRIAS QUE FICAM</span><i></i><span>FEITOS DE BAILE</span><i></i></div></div>
 
     <section class="section about-section" id="sobre" aria-labelledby="about-title">
       <div class="container">
-        <div class="section-heading"><p class="eyebrow">01 / ALÉM DO PALCO</p><span class="section-note">O GRUPO, OS MÚSICOS & A ESTRADA</span></div>
+        <div class="section-heading"><p class="eyebrow">ALÉM DO PALCO</p><span class="section-note">O GRUPO, OS MÚSICOS & A ESTRADA</span></div>
         <div class="about-grid">
           <div class="about-visual"><img id="band-image" src="assets/banda.png" alt="Grupo Os Baileiros" loading="lazy" width="1000" height="900"><div class="anniversary"><strong>15</strong><span>ANOS DE<br>HISTÓRIA</span></div><span class="photo-caption">OS BAILEIROS • A NOSSA ESSÊNCIA</span></div>
           <div class="about-copy"><h2 id="about-title">A RAIZ É DO SUL.<br>A ENERGIA É<br><em>OS BAILEIROS.</em></h2><p>São 15 anos de história, encontros e muita música. Os Baileiros carregam no nome a sua essência: fazer do palco um convite para dançar e de cada apresentação uma boa lembrança.</p><p>De <strong>Meio Bruta</strong> a <strong>Prendinha de Rodeio</strong>, o repertório aproxima a tradição gaúcha de quem vive a música de hoje. É essa troca entre a banda e o público que dá sentido a cada novo baile.</p><div class="musicians-note"><span class="mini-label">QUEM FAZ ESSA HISTÓRIA</span><h3>Gente que vive a música.</h3><p>Na voz de Neném, nos instrumentos e na parceria entre os músicos, o grupo encontra a sua identidade. As conversas com Neném e Zeca Knirsch revelam um pouco dessa caminhada, dentro e fora do palco.</p><a class="text-link" href="#podcasts">Conheça as histórias dos músicos <svg><use href="#i-arrow"/></svg></a></div></div>
@@ -89,14 +94,13 @@
     </section>
 
     <section class="section music-section" id="musica" aria-labelledby="music-title">
-      <div class="bus-art" aria-hidden="true"></div>
       <div class="container">
-        <div class="section-heading"><p class="eyebrow">02 / APERTE O PLAY</p><button class="text-link muted-link" data-modal="youtube">Todos os vídeos <svg><use href="#i-up-right"/></svg></button></div>
+        <div class="section-heading"><p class="eyebrow">APERTE O PLAY</p><button class="text-link muted-link" data-modal="youtube">Todos os vídeos <svg><use href="#i-up-right"/></svg></button></div>
         <div class="title-row"><h2 id="music-title">CADA CANÇÃO,<br><em>UM NOVO ENCONTRO.</em></h2><p>O sucesso que você canta junto.<br>Os clipes que merecem o replay.</p></div>
         <div class="cinema">
           <div class="player-topline"><span><span class="red-dot"></span> EM DESTAQUE</span><span>OS BAILEIROS / SESSÃO DE CLIPES</span></div>
-          <div class="main-video" id="main-video"><button class="video-poster" id="main-play" aria-label="Reproduzir Meio Bruta"><img id="main-poster" src="assets/ob75k7LWSkg.jpg" alt="Capa do clipe Meio Bruta" loading="lazy" width="1280" height="720"><span class="play-circle"><svg><use href="#i-play"/></svg></span><span class="poster-label">DÊ O PLAY NO NOSSO MAIOR SUCESSO</span></button></div>
-          <div class="player-caption"><div><span class="mini-label" id="video-type">CLIPE • FEAT. MARLON MORAES</span><h3 id="video-title" aria-live="polite">Meio Bruta</h3></div><a id="main-youtube-link" href="https://www.youtube.com/watch?v=ob75k7LWSkg" target="_blank" rel="noopener noreferrer" class="text-link">Abrir no YouTube <svg><use href="#i-up-right"/></svg></a></div>
+          <div class="main-video" id="main-video"><button class="video-poster" id="main-play" aria-label="Reproduzir Prendinha de Rodeio"><img id="main-poster" src="assets/B_PvYDWzkpQ.jpg" alt="Capa do clipe Prendinha de Rodeio" loading="lazy" width="1280" height="720"><span class="play-circle"><svg><use href="#i-play"/></svg></span><span class="poster-label">ESCOLHA UM CLIPE E DÊ O PLAY</span></button></div>
+          <div class="player-caption"><div><span class="mini-label" id="video-type">CLIPE • FEAT. JJSV</span><h3 id="video-title" aria-live="polite">Prendinha de Rodeio</h3></div><a id="main-youtube-link" href="https://www.youtube.com/watch?v=B_PvYDWzkpQ" target="_blank" rel="noopener noreferrer" class="text-link">Abrir no YouTube <svg><use href="#i-up-right"/></svg></a></div>
         </div>
         <div class="clip-list" id="clip-list" aria-label="Escolha um clipe"></div>
         <div class="tracks-top"><div><span class="eyebrow">PRA LEVAR NO REPEAT</span><h3>Nossas faixas. Seu próximo play.</h3></div><div class="carousel-controls"><button class="icon-button" id="tracks-prev" aria-label="Faixas anteriores"><svg class="rotate"><use href="#i-arrow"/></svg></button><button class="icon-button" id="tracks-pause" aria-label="Pausar carrossel de faixas" aria-pressed="false"><svg><use href="#i-pause"/></svg></button><button class="icon-button" id="tracks-next" aria-label="Próximas faixas"><svg><use href="#i-arrow"/></svg></button></div></div>
@@ -113,26 +117,35 @@
 
     <section class="section agenda-section" id="agenda" aria-labelledby="agenda-title">
       <div class="container">
-        <div class="section-heading"><p class="eyebrow">03 / AGENDA DE SHOWS</p><span class="section-note">BAILE MARCADO, PRESENÇA GARANTIDA</span></div>
+        <div class="section-heading"><p class="eyebrow">AGENDA DE SHOWS</p><span class="section-note">BAILE MARCADO, PRESENÇA GARANTIDA</span></div>
         <div class="title-row"><h2 id="agenda-title">A ESTRADA<br><em>CONTINUA.</em></h2><p>Confira os próximos bailes.<br>O seu evento pode ser o próximo da lista.</p></div>
         <div class="agenda-list" id="agenda-list" aria-live="polite"></div>
       </div>
     </section>
 
+    <section class="section partners-section" id="parceiros" aria-labelledby="partners-title">
+      <div class="container">
+        <div class="title-row"><h2 id="partners-title">QUEM FAZ O BAILE<br><em>ACONTECER COM A GENTE.</em></h2><p>Empresas que apoiam Os Baileiros na estrada e nos palcos. Conheça e prestigie quem caminha junto com o grupo.</p></div>
+        <div class="sponsor-grid" id="sponsors"></div>
+      </div>
+    </section>
+
     <section class="section gallery-section" id="galeria" aria-labelledby="gallery-title">
-      <div class="container"><div class="section-heading"><p class="eyebrow">04 / ARTE, FOTOS & MEMÓRIAS</p><button class="text-link" data-modal="instagram">Siga @osbaileiros <svg><use href="#i-instagram"/></svg></button></div><div class="title-row"><h2 id="gallery-title">O BAILE PASSA.<br><em>A HISTÓRIA FICA.</em></h2><p>Retratos, artes e momentos<br>da nossa vida na música.</p></div>
+      <div class="container"><div class="section-heading"><p class="eyebrow">ARTE, FOTOS & MEMÓRIAS</p><button class="text-link" data-modal="instagram">Siga @osbaileiros <svg><use href="#i-instagram"/></svg></button></div><div class="title-row"><h2 id="gallery-title">O BAILE PASSA.<br><em>A HISTÓRIA FICA.</em></h2><p>Retratos, artes e momentos<br>da nossa vida na música.</p></div>
         <div class="gallery-toolbar"><div class="gallery-tabs" role="group" aria-label="Filtrar galeria"><button class="active" data-filter="all" aria-pressed="true">Tudo</button><button data-filter="foto" aria-pressed="false">Fotos</button><button data-filter="arte" aria-pressed="false">Artes & capas</button></div><span class="gallery-hint">CLIQUE PARA VER DE PERTO <svg><use href="#i-expand"/></svg></span></div>
         <div class="gallery-grid" id="gallery-grid"></div>
         <div class="media-request"><p>Vai divulgar um baile com a gente?<br><strong>Peça as fotos e artes à nossa produção.</strong></p><button class="button button-outline" data-modal="press">Solicitar material <svg><use href="#i-download"/></svg></button></div>
       </div>
     </section>
 
-    <section class="platforms-section" aria-labelledby="platform-title"><div class="container"><div class="section-heading"><p class="eyebrow">05 / CONECTE-SE COM A MÚSICA</p><span class="section-note">SEM DISTÂNCIA. SEM PAUSA.</span></div><div class="title-row"><h2 id="platform-title">A GENTE SE ENCONTRA<br><em>NA SUA PLATAFORMA.</em></h2><button class="text-link" data-modal="instagram">Acompanhe de perto <svg><use href="#i-up-right"/></svg></button></div><div class="platform-cards"><button class="platform-card" data-modal="spotify"><span class="platform-icon"><svg><use href="#i-spotify"/></svg></span><span><strong>Spotify</strong><small>Os sucessos na sua playlist</small></span><svg><use href="#i-up-right"/></svg></button><button class="platform-card" data-modal="youtube"><span class="platform-icon"><svg><use href="#i-youtube"/></svg></span><span><strong>YouTube</strong><small>Clipes, música e histórias</small></span><svg><use href="#i-up-right"/></svg></button><button class="platform-card" data-modal="instagram"><span class="platform-icon"><svg><use href="#i-instagram"/></svg></span><span><strong>Instagram</strong><small>@osbaileiros · Perto de você</small></span><svg><use href="#i-up-right"/></svg></button></div></div></section>
+    <section class="platforms-section" aria-labelledby="platform-title"><div class="container"><div class="section-heading"><p class="eyebrow">CONECTE-SE COM A MÚSICA</p><span class="section-note">SEM DISTÂNCIA. SEM PAUSA.</span></div><div class="title-row"><h2 id="platform-title">A GENTE SE ENCONTRA<br><em>NA SUA PLATAFORMA.</em></h2><button class="text-link" data-modal="instagram">Acompanhe de perto <svg><use href="#i-up-right"/></svg></button></div><div class="platform-cards"><button class="platform-card" data-modal="spotify"><span class="platform-icon"><svg><use href="#i-spotify"/></svg></span><span><strong>Spotify</strong><small>Os sucessos na sua playlist</small></span><svg><use href="#i-up-right"/></svg></button><button class="platform-card" data-modal="youtube"><span class="platform-icon"><svg><use href="#i-youtube"/></svg></span><span><strong>YouTube</strong><small>Clipes, música e histórias</small></span><svg><use href="#i-up-right"/></svg></button><button class="platform-card" data-modal="instagram"><span class="platform-icon"><svg><use href="#i-instagram"/></svg></span><span><strong>Instagram</strong><small>@osbaileiros · Perto de você</small></span><svg><use href="#i-up-right"/></svg></button></div></div></section>
 
     <section class="contact-section" id="contato" aria-labelledby="contact-title"><div class="contact-background" aria-hidden="true"></div><div class="container contact-inner"><p class="eyebrow">SHOWS & EVENTOS · CONTRATAÇÕES</p><h2 id="contact-title">SEU EVENTO.<br>NOSSO PRÓXIMO <em>PALCO.</em></h2><p>Seu evento. Nossa música.<br>Fale com a equipe e consulte a disponibilidade para sua data.</p><button class="button button-light" data-modal="booking"><svg><use href="#i-whatsapp"/></svg> Quero Os Baileiros no meu evento <svg><use href="#i-up-right"/></svg></button><div class="contact-numbers"><button data-contact="office"><span>ESCRITÓRIO / SHOWS</span><strong>(54) 9 9961-3792</strong></button><span class="contact-divider"></span><button data-contact="nenem"><span>FALE COM O NENÉM</span><strong>(48) 9 9618-8563</strong></button></div></div></section>
   </main>
 
-  <footer class="site-footer"><div class="container"><div class="footer-top"><a href="#inicio" class="brand" aria-label="Os Baileiros, voltar ao início"><span class="logo-crop"><img class="official-logo" src="assets/banda.png" alt="Grupo Os Baileiros — logo oficial" width="1895" height="1895"></span></a><p>15 anos de história.<br>E muitos bailes pela frente.</p><div class="footer-social"><button class="icon-button" data-modal="instagram" aria-label="Acompanhar no Instagram"><svg><use href="#i-instagram"/></svg></button><button class="icon-button" data-modal="spotify" aria-label="Ouvir no Spotify"><svg><use href="#i-spotify"/></svg></button><button class="icon-button" data-modal="youtube" aria-label="Assistir no YouTube"><svg><use href="#i-youtube"/></svg></button><button class="icon-button" data-modal="booking" aria-label="Contratar pelo WhatsApp"><svg><use href="#i-whatsapp"/></svg></button></div></div><div class="footer-bottom"><span>© <span id="year">2026</span> Grupo Os Baileiros.</span><nav aria-label="Links do rodapé"><a href="#sobre">O grupo</a><a href="#musica">Música</a><a href="#agenda">Agenda</a><a href="#galeria">Fotos & artes</a><a href="#contato">Contrate</a></nav><a class="back-top" href="#inicio">VOLTAR AO TOPO ↑</a></div><p class="photo-credit" id="photo-credit"></p></div></footer>
+  <footer class="site-footer"><div class="container"><div class="footer-top"><a href="#inicio" class="brand" aria-label="Os Baileiros, voltar ao início"><span class="logo-crop"><img class="official-logo" src="assets/banda.png" alt="Grupo Os Baileiros — logo oficial" width="1895" height="1895"></span></a><p>15 anos de história.<br>E muitos bailes pela frente.</p><div class="footer-social"><button class="icon-button" data-modal="instagram" aria-label="Acompanhar no Instagram"><svg><use href="#i-instagram"/></svg></button><button class="icon-button" data-modal="spotify" aria-label="Ouvir no Spotify"><svg><use href="#i-spotify"/></svg></button><button class="icon-button" data-modal="youtube" aria-label="Assistir no YouTube"><svg><use href="#i-youtube"/></svg></button><button class="icon-button" data-modal="booking" aria-label="Contratar pelo WhatsApp"><svg><use href="#i-whatsapp"/></svg></button></div></div><div class="footer-bottom"><span>© <span id="year">2026</span> Grupo Os Baileiros.</span><nav aria-label="Links do rodapé"><a href="#sobre">O grupo</a><a href="#musica">Música</a><a href="#agenda">Agenda</a><a href="#parceiros">Parceiros</a><a href="#galeria">Fotos & artes</a><a href="#contato">Contrate</a></nav><a class="back-top" href="#inicio">VOLTAR AO TOPO ↑</a></div><p class="photo-credit" id="photo-credit"></p></div></footer>
+
+  <div class="film-now" id="film-now" hidden><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="film-now-text"><strong>Meio Bruta</strong> tocando no fundo</span><button class="film-now-mute" data-film-sound aria-label="Silenciar o clipe de fundo"><svg><use href="#i-mute"/></svg> Silenciar</button></div>
 
   <button class="floating-whatsapp" data-modal="booking" aria-label="Consultar shows pelo WhatsApp"><span>Vamos fazer um baile?</span><svg><use href="#i-whatsapp"/></svg></button>
 

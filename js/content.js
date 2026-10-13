@@ -30,12 +30,31 @@ window.BAILEIROS = {
     { date: '2026-09-27', venue: 'Festa de Comunidade Linha Bouer', city: 'Águas Mornas / SC' },
     { date: '2026-09-27', venue: 'Domingueira Show', city: 'Tijucas / SC' }
   ],
+  // Meio Bruta has its own section (#meio-bruta), so the clip player opens on the next hits.
   clips: [
-    { id: 'ob75k7LWSkg', title: 'Meio Bruta', subtitle: 'Feat. Marlon Moraes', type: 'Clipe' },
     { id: 'B_PvYDWzkpQ', title: 'Prendinha de Rodeio', subtitle: 'Feat. JJSV', type: 'Clipe' },
     { id: 'Q1BGIpWKeUs', title: 'Inclusive Eu', subtitle: 'Feat. Sorriso Lindo', type: 'Clipe' },
+    { id: 'ob75k7LWSkg', title: 'Meio Bruta', subtitle: 'Feat. Marlon Moraes', type: 'Clipe' },
     { id: '9_XHwKSvvw0', title: 'Meio Bruta', subtitle: 'Participação Talagaço', type: 'Vídeo' }
   ],
+  // Patrocinadores e apoiadores: cada item vira um card na seção "Parceiros".
+  // Campos (só "name" é obrigatório):
+  //   name        Nome da empresa
+  //   tier        'master' (card grande, primeiro da lista) ou 'apoio' (padrão)
+  //   logo        Caminho da logo, ex.: 'assets/parceiros/marca.png' (PNG/SVG, de preferência com fundo transparente)
+  //   logoBg      Cor de fundo atrás da logo, ex.: '#ffffff' ou '#111111' (padrão: cinza bem claro)
+  //   category    Ramo da empresa, ex.: 'Concessionária', 'Agropecuária'
+  //   city        Cidade / UF
+  //   description Uma ou duas frases sobre a empresa
+  //   site        Link do site
+  //   instagram   Link do Instagram
+  //   whatsapp    Número com DDI e DDD, só dígitos, ex.: '5548999999999'
+  // Exemplo:
+  //   { name: 'Nome da Empresa', tier: 'master', logo: 'assets/parceiros/empresa.png', category: 'Agropecuária',
+  //     city: 'Biguaçu / SC', description: 'Frase curta sobre a empresa.', site: 'https://empresa.com.br',
+  //     instagram: 'https://www.instagram.com/empresa/', whatsapp: '5548999999999' },
+  // Enquanto a lista estiver vazia, a seção mostra espaços abertos convidando novas marcas.
+  sponsors: [],
   tracks: [
     { id: 'wp1_Usv7eK8', title: 'Meio Bruta', subtitle: 'Os Baileiros · Talagaço' },
     { id: 'B_PvYDWzkpQ', title: 'Prendinha de Rodeio', subtitle: 'Os Baileiros · JJSV' },

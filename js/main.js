@@ -15,9 +15,9 @@
   let lastFocus = null;
   let galleryIndex = 0;
   let galleryFilter = 'all';
-  let heroPlayer;
-  let heroPaused = reduceMotion.matches || saveData;
-  let heroVisible = true;
+  let filmPlayer;
+  let filmPaused = reduceMotion.matches || saveData;
+  let filmSound = false;
   let activeClip = data.clips[0];
   let mainPlaying = false;
 
@@ -64,8 +64,11 @@
     frame?.contentWindow?.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), 'https://www.youtube.com');
   }
   function pauseAll() {
-    heroPlayer?.pauseVideo?.();
+    filmPlayer?.pauseVideo?.();
     pauseMain();
+  }
+  function resumeFilm() {
+    if (!filmPaused && !document.hidden && !actionModal.open && !mediaModal.open) filmPlayer?.playVideo?.();
   }
   function openDialog(dialog) {
     lastFocus = document.activeElement;
@@ -99,7 +102,7 @@
         document.documentElement.classList.remove('modal-open');
       }
       if (lastFocus?.isConnected) lastFocus.focus({ preventScroll: true });
-      if (heroVisible && !heroPaused && !document.hidden) heroPlayer?.playVideo?.();
+      resumeFilm();
     });
   });
 
@@ -110,21 +113,45 @@
     return `<div class="modal-icon">${icon('whatsapp')}</div><p class="eyebrow">VAMOS FAZER UM BAILE?</p><h2 id="modal-title">LEVE ESSA ENERGIA<br><em>AO SEU EVENTO.</em></h2><p>Conte um pouco sobre a sua ideia. Vamos abrir uma conversa com a produção no WhatsApp.</p>
       <form id="booking-form" class="modal-form"><div class="form-row"><label>Cidade do evento<input name="city" placeholder="Ex.: Florianópolis / SC" autocomplete="address-level2" maxlength="90"></label><label>Data prevista<input name="date" type="date"></label></div><div class="form-row"><label>Tipo de evento<select name="event"><option>Baile</option><option>Festa de cidade</option><option>Rodeio / CTG</option><option>Evento particular</option><option>Outro evento</option></select></label><label>Com quem falar<select name="contact"><option value="office" ${contact === 'office' ? 'selected' : ''}>Escritório · Shows</option><option value="nenem" ${contact === 'nenem' ? 'selected' : ''}>Neném</option></select></label></div><button class="button" type="submit">${icon('whatsapp')} Consultar disponibilidade ${icon('up-right')}</button></form><a class="modal-secondary" href="${whatsappURL(contact, 'Olá! Gostaria de informações para contratar o Grupo Os Baileiros para um evento.')}" target="_blank" rel="noopener noreferrer">Prefiro conversar direto, sem preencher</a><span class="modal-note">Os campos são opcionais. A mensagem será preparada para você revisar e enviar no WhatsApp.</span>`;
   }
+  // Meio Bruta lives in a modal: it opens playing with sound and lets the visitor switch versions in place.
+  const songVersions = [
+    { id: 'ob75k7LWSkg', title: 'Clipe oficial', note: 'Feat. Marlon Moraes' },
+    { id: '9_XHwKSvvw0', title: 'Com Talagaço', note: 'Vídeo da participação' },
+    { id: 'wp1_Usv7eK8', title: 'Áudio oficial', note: 'Os Baileiros · Talagaço' }
+  ];
+  function songHTML() {
+    const versions = songVersions.map(v => `<button class="version" data-song-version="${v.id}" aria-pressed="false"><span class="version-thumb"><img src="${thumbnail(v.id)}" alt="" width="480" height="270">${icon('play')}</span><span class="version-meta"><strong>${v.title}</strong><small>${v.note}</small></span></button>`).join('');
+    return `<div class="song"><div class="song-player" id="song-player"></div>
+      <div class="song-head"><span class="song-disc" aria-hidden="true"><img src="assets/vinyl-760.jpg" alt="" width="760" height="760"><span><img src="assets/ob75k7LWSkg.jpg" alt="" width="1280" height="720"></span></span><div><h2 id="modal-title" class="song-title">Meio <em>Bruta</em></h2><p class="song-credit">Os Baileiros <span>feat.</span> Marlon Moraes</p></div></div>
+      <div class="song-versions" role="group" aria-label="Escolha a versão">${versions}</div>
+      <div class="song-actions"><button class="button" data-song-background>${icon('sound')} Continuar ouvindo enquanto navego</button><button class="button button-outline song-spotify" data-modal="spotify">${icon('spotify')} Spotify</button><a class="text-link" id="song-youtube" href="${videoURL(songVersions[0].id)}" target="_blank" rel="noopener noreferrer">Abrir no YouTube ${icon('up-right')}</a></div></div>`;
+  }
+  function playSongVersion(id) {
+    const version = songVersions.find(v => v.id === id);
+    if (!version || !$('#song-player')) return;
+    $('#song-player').replaceChildren(videoFrame(id, `Meio Bruta · ${version.title}`));
+    $$('[data-song-version]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.songVersion === id)));
+    $('#song-youtube').href = videoURL(id);
+  }
   function showAction(kind, contact = 'office') {
     actionModal.dataset.kind = kind;
-    $('#modal-context').textContent = ({ booking: 'Shows e eventos', press: 'Material de divulgação', instagram: 'Instagram', spotify: 'Ouça Os Baileiros', youtube: 'Canal no YouTube' })[kind] || 'Os Baileiros';
+    $('#modal-context').textContent = ({ booking: 'Shows e eventos', press: 'Material de divulgação', partner: 'Parcerias', song: 'O som do momento', instagram: 'Instagram', spotify: 'Ouça Os Baileiros', youtube: 'Canal no YouTube' })[kind] || 'Os Baileiros';
     const container = $('#modal-content');
     if (kind === 'booking') container.innerHTML = bookingHTML(contact);
     else if (kind === 'press') {
       container.innerHTML = `<div class="modal-icon">${icon('download')}</div><p class="eyebrow">MATERIAL DE DIVULGAÇÃO</p><h2 id="modal-title">SEU BAILE<br><em>BEM APRESENTADO.</em></h2><p>Fale com a produção para receber fotos oficiais, logotipo e artes atualizadas para divulgar o seu evento.</p><a class="button wide" href="${whatsappURL('office', 'Olá! Gostaria de solicitar fotos oficiais, logotipo e artes do Grupo Os Baileiros para divulgar um evento.')}" target="_blank" rel="noopener noreferrer">${icon('whatsapp')} Solicitar à produção ${icon('up-right')}</a><span class="modal-note">A equipe envia o material adequado para a sua divulgação.</span>`;
+    } else if (kind === 'partner') {
+      container.innerHTML = `<div class="modal-icon">${icon('whatsapp')}</div><p class="eyebrow">PARCERIAS & PATROCÍNIO</p><h2 id="modal-title">SUA MARCA<br><em>NO PRÓXIMO BAILE.</em></h2><p>Conte o que a sua marca procura. A produção do grupo responde pelo WhatsApp com as possibilidades de parceria.</p><a class="button wide" href="${whatsappURL('office', 'Olá! Vim pelo site e gostaria de conversar sobre uma parceria ou patrocínio com o Grupo Os Baileiros.')}" target="_blank" rel="noopener noreferrer">${icon('whatsapp')} Conversar com a produção ${icon('up-right')}</a><span class="modal-note">A mensagem abre pronta no WhatsApp para você revisar antes de enviar.</span>`;
     } else if (kind === 'instagram') {
       container.innerHTML = `<div class="modal-icon">${icon('instagram')}</div><p class="eyebrow">VEM COM A GENTE</p><h2 id="modal-title">O BAILE ACABA.<br><em>A RESENHA NÃO.</em></h2><p>Agenda, bastidores, estrada e os momentos que só quem acompanha de perto vê. Encontre a gente no <strong>@osbaileiros</strong>.</p><a class="button wide" href="${data.instagram}" target="_blank" rel="noopener noreferrer">${icon('instagram')} Acompanhar no Instagram ${icon('up-right')}</a>`;
     } else if (kind === 'spotify') {
       container.innerHTML = `<div class="modal-icon">${icon('spotify')}</div><p class="eyebrow">SUA TRILHA, NOSSO SOM</p><h2 id="modal-title">DEIXA TOCAR.<br><em>DEIXA NO REPEAT.</em></h2><p>Escute os sucessos e siga o Grupo Os Baileiros no Spotify para acompanhar as próximas faixas.</p><iframe class="spotify-embed" src="${data.spotifyEmbed}" title="Grupo Os Baileiros no Spotify" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><a class="button wide" href="${data.spotify}" target="_blank" rel="noopener noreferrer">${icon('spotify')} Abrir no Spotify ${icon('up-right')}</a>`;
     } else if (kind === 'youtube') {
       container.innerHTML = `<div class="modal-icon">${icon('youtube')}</div><p class="eyebrow">O NOSSO PALCO NA SUA TELA</p><h2 id="modal-title">DÊ O PLAY.<br><em>CANTE JUNTO.</em></h2><p>Clipes, participações e músicas para voltar quantas vezes quiser. Inscreva-se no canal e acompanhe o grupo.</p><a class="button wide" href="${data.youtube}" target="_blank" rel="noopener noreferrer">${icon('youtube')} Assistir no YouTube ${icon('up-right')}</a><button class="modal-secondary" id="go-to-clips">Prefiro assistir aqui na página</button>`;
-    } else return;
+    } else if (kind === 'song') container.innerHTML = songHTML();
+    else return;
     openDialog(actionModal);
+    if (kind === 'song') playSongVersion(songVersions[0].id);
     const form = $('#booking-form');
     if (form) {
       const dateInput = $('input[name="date"]', form);
@@ -165,7 +192,8 @@
     openDialog(mediaModal);
   }
   function startMain(muted = false) {
-    heroPlayer?.pauseVideo?.();
+    // Only one soundtrack at a time: the background clip keeps running, silently.
+    if (!muted) setFilmSound(false);
     $('#main-video').replaceChildren(videoFrame(activeClip.id, `${activeClip.title} · ${activeClip.subtitle}`, muted));
     mainPlaying = true;
     $('#video-type').textContent = `${activeClip.type} • ${activeClip.subtitle}${muted ? ' • INICIADO SEM SOM' : ''}`;
@@ -257,6 +285,43 @@
   }
   renderAgenda();
 
+  // Sponsors: one card per company, linking to its site and channels. Open slots invite new brands.
+  function sponsorCard(sponsor) {
+    const tier = sponsor.tier === 'master' ? 'master' : 'apoio';
+    const main = sponsor.site || sponsor.instagram || '';
+    const background = /^(#[0-9a-f]{3,8}|[a-z]+)$/i.test(sponsor.logoBg || '') ? ` style="--logo-bg:${sponsor.logoBg}"` : '';
+    const initials = escape(sponsor.name.split(/\s+/).slice(0, 2).map(word => word[0]).join('').toUpperCase());
+    const logo = sponsor.logo ? `<img src="${escape(sponsor.logo)}" alt="Logo ${escape(sponsor.name)}" loading="lazy">` : `<span class="sponsor-initials" aria-hidden="true">${initials}</span>`;
+    const meta = [sponsor.category, sponsor.city].filter(Boolean).map(escape).join(' · ');
+    const external = 'target="_blank" rel="noopener noreferrer"';
+    const links = [
+      sponsor.instagram && `<a class="icon-button" href="${escape(sponsor.instagram)}" ${external} aria-label="Instagram de ${escape(sponsor.name)}">${icon('instagram')}</a>`,
+      sponsor.whatsapp && `<a class="icon-button" href="https://wa.me/${String(sponsor.whatsapp).replace(/\D/g, '')}" ${external} aria-label="WhatsApp de ${escape(sponsor.name)}">${icon('whatsapp')}</a>`
+    ].filter(Boolean).join('');
+    const name = main ? `<a class="sponsor-main" href="${escape(main)}" ${external}>${escape(sponsor.name)}</a>` : escape(sponsor.name);
+    return `<article class="sponsor-card tier-${tier}"><div class="sponsor-logo"${background}>${logo}</div><div class="sponsor-body"><span class="sponsor-tier">${tier === 'master' ? 'Patrocinador master' : 'Apoio'}</span><h3>${name}</h3>${meta ? `<p class="sponsor-meta">${meta}</p>` : ''}${sponsor.description ? `<p class="sponsor-desc">${escape(sponsor.description)}</p>` : ''}<div class="sponsor-footer">${links ? `<div class="sponsor-links">${links}</div>` : ''}${main ? `<span class="sponsor-visit" aria-hidden="true">${sponsor.site ? 'Visitar site' : 'Conhecer'} ${icon('up-right')}</span>` : ''}</div></div></article>`;
+  }
+  function sponsorSlot(tier) {
+    const master = tier === 'master';
+    return `<button class="sponsor-card sponsor-slot tier-${tier}" data-modal="partner"><span class="sponsor-logo"><span class="slot-mark">${icon('plus')}</span></span><span class="sponsor-body"><span class="sponsor-tier">${master ? 'Espaço master disponível' : 'Espaço de apoio disponível'}</span><span class="slot-title">${master ? 'Sua marca em destaque junto com Os Baileiros.' : 'Sua marca aqui.'}</span><span class="sponsor-desc">${master ? 'Presença na estrada, nos palcos e nas redes do grupo. Fale com a produção e monte o patrocínio.' : 'Apoie o grupo e apareça para quem acompanha os bailes.'}</span><span class="sponsor-visit">Quero ser parceiro ${icon('up-right')}</span></span></button>`;
+  }
+  function renderSponsors() {
+    const grid = $('#sponsors');
+    if (!grid) return;
+    const sponsors = (data.sponsors || []).filter(s => s?.name).sort((a, b) => (b.tier === 'master') - (a.tier === 'master'));
+    const slots = sponsors.length ? [sponsorSlot('apoio')] : [sponsorSlot('master'), sponsorSlot('apoio')];
+    grid.innerHTML = sponsors.map(sponsorCard).join('') + slots.join('');
+    enhanceSponsorLogos(grid);
+  }
+  function enhanceSponsorLogos(root) {
+    // A missing logo file falls back to the company's initials instead of a broken image.
+    $$('.sponsor-logo img', root).forEach(img => (img.dataset.guarded = 'true') && img.addEventListener('error', () => {
+      const name = img.alt.replace(/^Logo /, '');
+      img.replaceWith(Object.assign(document.createElement('span'), { className: 'sponsor-initials', textContent: name.split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase() }));
+    }, { once: true }));
+  }
+  renderSponsors();
+
   document.addEventListener('click', e => {
     const modalButton = e.target.closest('[data-modal]');
     const playButton = e.target.closest('[data-play]');
@@ -265,7 +330,13 @@
     const galleryButton = e.target.closest('[data-gallery]');
     const galleryStep = e.target.closest('[data-gallery-step]');
     const contactButton = e.target.closest('[data-contact]');
-    if (modalButton) showAction(modalButton.dataset.modal);
+    const filmSoundButton = e.target.closest('[data-film-sound]');
+    const songVersion = e.target.closest('[data-song-version]');
+    if (modalButton?.tagName === 'A') e.preventDefault();
+    if (songVersion) playSongVersion(songVersion.dataset.songVersion);
+    else if (e.target.closest('[data-song-background]')) { closeDialog(actionModal); setFilmSound(true); }
+    else if (filmSoundButton) setFilmSound(!filmSound);
+    else if (modalButton) showAction(modalButton.dataset.modal);
     else if (playButton) showVideo(playButton.dataset.play, playButton.dataset.title);
     else if (clipButton) selectClip(Number(clipButton.dataset.clip));
     else if (contactButton) showAction('booking', contactButton.dataset.contact);
@@ -281,57 +352,123 @@
     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); stepGallery(e.key === 'ArrowRight' ? 1 : -1); }
   });
 
-  function updateHeroControl() {
-    $('#hero-toggle').innerHTML = icon(heroPaused ? 'play' : 'pause');
-    $('#hero-toggle').setAttribute('aria-label', heroPaused ? 'Reproduzir vídeo de fundo' : 'Pausar vídeo de fundo');
-    $('#hero-toggle').setAttribute('aria-pressed', String(heroPaused));
+  // Background film: Meio Bruta runs behind the whole page, muted, until the visitor turns the sound on.
+  let filmFailed = false;
+  let soundStarted = false;
+  let pendingSound = false;
+  function updateFilmControl() {
+    const toggle = $('#film-toggle');
+    toggle.innerHTML = icon(filmPaused ? 'play' : 'pause');
+    toggle.setAttribute('aria-label', filmPaused ? 'Reproduzir clipe de fundo' : 'Pausar clipe de fundo');
+    toggle.setAttribute('aria-pressed', String(filmPaused));
   }
-  function createHeroPlayer() {
-    if (!window.YT?.Player || heroPlayer) return;
+  function updateFilmSoundUI() {
+    document.body.classList.toggle('film-sound-on', filmSound);
+    $$('.film-sound-label').forEach(label => {
+      label.textContent = filmSound ? 'Silenciar o clipe' : (label.closest('.button-play') ? 'Ouvir Meio Bruta' : 'Ligar o som aqui');
+    });
+    $$('.film-sound-icon').forEach(button => {
+      button.innerHTML = icon(filmSound ? 'sound' : 'mute');
+      button.setAttribute('aria-label', filmSound ? 'Silenciar o clipe de fundo' : 'Ligar o som do clipe de fundo');
+    });
+    $('#film-now').hidden = !filmSound;
+  }
+  function soundFallback() {
+    filmSound = false;
+    filmPlayer?.mute?.();
+    updateFilmSoundUI();
+    showVideo(data.heroVideo, 'Meio Bruta · feat. Marlon Moraes');
+  }
+  function applySound() {
+    pendingSound = false;
+    if (!soundStarted) { filmPlayer.seekTo(0, true); soundStarted = true; }
+    filmPlayer.unMute();
+    filmPlayer.setVolume(100);
+    filmPlayer.playVideo();
+    // Some browsers refuse audio without a direct gesture inside the frame; the clip player always works.
+    window.setTimeout(() => { if (filmSound && filmPlayer.isMuted?.()) soundFallback(); }, 900);
+  }
+  function setFilmSound(on) {
+    if (on === filmSound) return;
+    if (on && filmFailed) { showVideo(data.heroVideo, 'Meio Bruta · feat. Marlon Moraes'); return; }
+    filmSound = on;
+    if (on) {
+      filmPaused = false;
+      updateFilmControl();
+      $('#film-video').classList.add('user-enabled');
+      pauseMain();
+      closeFloatingSpotify();
+      if (filmPlayer?.unMute) applySound();
+      else { pendingSound = true; loadFilm(); }
+    } else filmPlayer?.mute?.();
+    updateFilmSoundUI();
+  }
+  function createFilmPlayer() {
+    if (!window.YT?.Player || filmPlayer) return;
     const host = document.createElement('div');
-    host.id = 'hero-youtube';
-    $('#hero-video').append(host);
-    heroPlayer = new window.YT.Player('hero-youtube', {
+    host.id = 'film-youtube';
+    $('#film-video').append(host);
+    filmPlayer = new window.YT.Player('film-youtube', {
       videoId: data.heroVideo,
-      playerVars: { autoplay: heroPaused ? 0 : 1, mute: 1, playsinline: 1, controls: 0, disablekb: 1, loop: 1, playlist: data.heroVideo, rel: 0, start: 16, cc_load_policy: 0, iv_load_policy: 3, ...(location.protocol.startsWith('http') ? { origin: location.origin } : {}) },
+      playerVars: { autoplay: filmPaused ? 0 : 1, mute: 1, playsinline: 1, controls: 0, disablekb: 1, loop: 1, playlist: data.heroVideo, rel: 0, start: 16, cc_load_policy: 0, iv_load_policy: 3, ...(location.protocol.startsWith('http') ? { origin: location.origin } : {}) },
       events: {
-        onReady(event) { event.target.mute(); const frame = event.target.getIframe(); frame.tabIndex = -1; frame.title = 'Meio Bruta, vídeo de fundo sem som'; if (!heroPaused && heroVisible) event.target.playVideo(); },
-        onStateChange(event) { if (event.data === 1) $('#hero-video').classList.add('playing'); },
-        onError() { $('#hero-video').classList.remove('playing'); $('#hero-toggle').hidden = true; }
+        onReady(event) {
+          event.target.mute();
+          const frame = event.target.getIframe();
+          frame.tabIndex = -1;
+          frame.title = 'Meio Bruta, clipe de fundo';
+          if (pendingSound) applySound();
+          else resumeFilm();
+        },
+        onStateChange(event) { if (event.data === 1) $('#film-video').classList.add('playing'); },
+        onError() {
+          filmFailed = true;
+          $('#film-video').classList.remove('playing');
+          $('#film-toggle').hidden = true;
+          if (filmSound || pendingSound) { pendingSound = false; soundFallback(); }
+        }
       }
     });
   }
-  function loadHeroVideo() {
-    if (window.YT?.Player) return createHeroPlayer();
+  function loadFilm() {
+    if (window.YT?.Player) return createFilmPlayer();
     if ($('#youtube-api')) return;
-    window.onYouTubeIframeAPIReady = createHeroPlayer;
+    window.onYouTubeIframeAPIReady = createFilmPlayer;
     const script = document.createElement('script');
     script.id = 'youtube-api'; script.src = 'https://www.youtube.com/iframe_api'; script.async = true;
-    script.onerror = () => $('#hero-toggle').hidden = true;
+    script.onerror = () => {
+      filmFailed = true;
+      $('#film-toggle').hidden = true;
+      if (pendingSound) { pendingSound = false; soundFallback(); }
+    };
     document.head.append(script);
   }
-  $('#hero-toggle').addEventListener('click', () => {
-    heroPaused = !heroPaused;
-    updateHeroControl();
-    if (heroPaused) heroPlayer?.pauseVideo?.();
-    else { $('#hero-video').classList.add('user-enabled'); loadHeroVideo(); heroPlayer?.playVideo?.(); }
+  $('#film-toggle').addEventListener('click', () => {
+    filmPaused = !filmPaused;
+    updateFilmControl();
+    if (filmPaused) { setFilmSound(false); filmPlayer?.pauseVideo?.(); }
+    else { $('#film-video').classList.add('user-enabled'); loadFilm(); filmPlayer?.playVideo?.(); }
   });
-  updateHeroControl();
-  if (!heroPaused) loadHeroVideo();
+  updateFilmControl();
+  if (!filmPaused) loadFilm();
 
   const floatingSpotifyToggle = $('#floating-spotify-toggle');
   const floatingSpotifyPanel = $('#floating-spotify-panel');
+  function closeFloatingSpotify() {
+    floatingSpotifyPanel.hidden = true;
+    floatingSpotifyToggle.setAttribute('aria-expanded', 'false');
+  }
   floatingSpotifyToggle.addEventListener('click', () => {
     const open = floatingSpotifyPanel.hidden;
     if (open && !floatingSpotifyPanel.childElementCount) {
       floatingSpotifyPanel.innerHTML = `<iframe src="${data.spotifyEmbed}" title="Os Baileiros no Spotify" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
     }
+    if (open) setFilmSound(false);
     floatingSpotifyPanel.hidden = !open;
     floatingSpotifyToggle.setAttribute('aria-expanded', String(open));
   });
 
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(entries => { heroVisible = entries[0].isIntersecting; }, { threshold: .1 }).observe($('#inicio'));
 
     // Scroll-spy: keep the URL hash and nav highlight in sync with whichever section is actually in view.
     const spyLinks = $$('#navigation a[href^="#"], .footer-bottom nav a[href^="#"]');
@@ -348,24 +485,20 @@
     }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
     $$('main section[id]').forEach(section => spy.observe(section));
     new IntersectionObserver(entries => { carouselVisible = entries[0].isIntersecting; }, { threshold: .2 }).observe(tracks);
-    new IntersectionObserver(entries => {
-      const visible = entries[0].isIntersecting;
-      if (visible && !mainPlaying && !reduceMotion.matches && !saveData && !mediaModal.open && !actionModal.open) startMain(true);
-      else if (!visible) pauseMain();
-    }, { threshold: .4 }).observe($('#main-video'));
+    new IntersectionObserver(entries => { if (!entries[0].isIntersecting && mainPlaying) pauseMain(); }, { threshold: .4 }).observe($('#main-video'));
     if (!reduceMotion.matches) {
       const reveal = new IntersectionObserver(entries => entries.forEach(entry => {
         if (entry.isIntersecting) { entry.target.classList.remove('pending'); reveal.unobserve(entry.target); }
       }), { threshold: .06 });
-      $$('.about-grid,.road-story,.title-row,.podcast-section,.contact-inner').forEach(element => { element.classList.add('reveal', 'pending'); reveal.observe(element); });
+      $$('.about-grid,.road-story,.title-row,.podcast-section,.contact-inner,.sponsor-grid').forEach(element => { element.classList.add('reveal', 'pending'); reveal.observe(element); });
     }
   } else carouselVisible = true;
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) pauseAll();
-    else if (heroVisible && !heroPaused && !mediaModal.open && !actionModal.open) heroPlayer?.playVideo?.();
+    else resumeFilm();
   });
   reduceMotion.addEventListener('change', () => {
-    if (reduceMotion.matches) { heroPaused = true; carouselPaused = true; pauseAll(); updateCarouselButton(); updateHeroControl(); $$('.reveal.pending').forEach(el => el.classList.remove('pending')); }
+    if (reduceMotion.matches) { filmPaused = true; setFilmSound(false); carouselPaused = true; pauseAll(); updateCarouselButton(); updateFilmControl(); $$('.reveal.pending').forEach(el => el.classList.remove('pending')); }
   });
   enhanceImages();
 })();

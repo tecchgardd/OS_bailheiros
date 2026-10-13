@@ -29,7 +29,9 @@ Projeto em HTML, CSS e JavaScript puro, sem framework e sem etapa de build.
 - WhatsApp em verde, Spotify em verde, YouTube em vermelho e Instagram em rosa/roxo, inclusive nos modais.
 - Menu recolhível até 1024 px e ajustes para 780, 480 e 380 px, incluindo controles de toque, formulários e cards.
 - Seções claras e escuras e cards de conexão com Spotify, YouTube e Instagram.
-- Vídeo de fundo de Meio Bruta, sem áudio inicial, com pausa e fallback fotográfico.
+- O clipe de Meio Bruta roda no fundo da página inteira (camada fixa), sem som. Os botões "Ouvir Meio Bruta" / "Ligar o som aqui" ativam o áudio do próprio clipe; um aviso flutuante permite silenciar de qualquer ponto da página. Se o navegador bloquear o som, o clipe abre no player com áudio.
+- Modal de Meio Bruta (botão "Ouvir Meio Bruta" no hero): abre tocando com som, com troca entre as três versões (clipe oficial, participação Talagaço e áudio) no mesmo player e o botão "Continuar ouvindo enquanto navego", que fecha o modal e liga o som do clipe de fundo.
+- Seção de Parceiros (#parceiros): cards dos patrocinadores com logo, ramo, cidade, descrição e links para site, Instagram e WhatsApp. O patrocinador `tier: 'master'` ganha um card maior. Os cadastros ficam em `sponsors` no `js/content.js` (os campos estão comentados lá). Sem patrocinadores cadastrados, a seção mostra espaços disponíveis que abrem a conversa de parceria no WhatsApp.
 - Sobre o grupo, referência a Neném e Zeca Knirsch, foto dos músicos e ônibus na mesma seção.
 - Player principal, quatro clipes selecionáveis e sete faixas em carrossel automático.
 - O player principal inicia sem som quando entra no campo de visão. Use os controles do YouTube para ativar o áudio. Se o navegador impedir autoplay, use o botão de reprodução.
